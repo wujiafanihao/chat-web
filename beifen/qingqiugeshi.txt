@@ -1,0 +1,10 @@
+{
+    "model": "gpt-4",
+    "api_key": "sk-ab273b67e6e64f399870cf37b33cf34f",
+    "base_url": "http://127.0.0.1:1511/v1",
+    "embeddings": "text-embedding-3-small",
+    "embed_base_url": "https://api.chatanywhere.tech/v1/",
+    "embed_api_key": "sk-dw366zNMWe7tTmmRfzr0NTVMCjegXOCTU1PRdT3wTFvHjr4X",
+    "query": "告诉我游戏化教育对幼儿的效果怎样",
+    "session": "123123123"
+}

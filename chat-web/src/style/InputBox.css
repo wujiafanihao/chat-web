@@ -1,0 +1,83 @@
+.input-box {
+  display: flex;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  align-items: center;
+}
+
+.input-box input[type="text"] {
+  flex: 1;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #ced4da;
+  border-radius: 25px;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.input-box input[type="text"]:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+.input-box button {
+  padding: 10px;
+  font-size: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.input-box button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.input-box .upload-btn {
+  background-color: #2196F3;
+}
+
+.input-box .upload-btn:hover {
+  background-color: #1e88e5;
+}
+
+.select-wrapper {
+  position: relative;
+  margin-left: 10px;
+}
+
+.input-box select {
+  padding: 10px 30px 10px 10px;
+  font-size: 16px;
+  border: 2px solid #ced4da;
+  border-radius: 25px;
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.input-box select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+.select-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #6c757d;
+  font-size: 20px;
+}

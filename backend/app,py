@@ -1,0 +1,76 @@
+from langchain.document_loaders.pdf import UnstructuredPDFLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_openai import ChatOpenAI
+from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationSummaryBufferMemory
+from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+
+model = 'gpt-4o'
+api_key = 'sk-ab273b67e6e64f399870cf37b33cf34f'
+base_url = 'http://127.0.0.1:1511/v1'
+embed_model = 'text-embedding-3-small'
+embed_base_url = 'https://api.chatanywhere.tech/v1/'
+embed_api_key = 'sk-dw366zNMWe7tTmmRfzr0NTVMCjegXOCTU1PRdT3wTFvHjr4X'
+
+# 创建提示模板
+prompt_template = """
+You are an academic doctor, you need to answer the user in professional terms based on this context:
+{context}
+
+You must speak Chinese
+
+User's question: {question}
+Helpful Answer:"""
+
+prompt = PromptTemplate(
+    template=prompt_template, input_variables=["context", "input"]
+)
+
+llm = ChatOpenAI(base_url=base_url,api_key=api_key, temperature=0.7, verbose=True, model=model)
+
+# 读取PDF文件
+def read_pdf(file_path: str):
+    loader = UnstructuredPDFLoader(file_path)
+    docs = loader.load()
+    return docs
+    
+def split_text(docs: list):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+    splitter = text_splitter.split_documents(docs)
+    return splitter
+
+def create_vector_store(split_docs):
+    embeddings = OpenAIEmbeddings(base_url=embed_base_url,api_key=embed_api_key, model=embeddings)  
+    vectorstore = FAISS.from_documents(split_docs, embeddings)
+    vectorstore.save_local("faiss_index")
+    return vectorstore
+
+docs = read_pdf('2406.04794v1.pdf')
+split_docs = split_text(docs)
+
+try:
+    vector_store = create_vector_store(split_docs)
+except TypeError as e:
+    print(f"Error creating vector store: {e}")
+    exit(1)
+
+retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={'k': 10})
+
+# 创建记忆
+memory = ConversationSummaryBufferMemory(llm=llm, memory_key="chat_history", return_messages=True,max_token_limit=500,input_key="question")
+
+# 创建检索增强生成链
+qa = ConversationalRetrievalChain.from_llm(
+    llm=llm,
+    retriever=retriever,
+    memory=memory,
+    combine_docs_chain_kwargs={"prompt": prompt},
+    verbose=True
+)
+
+query = "告诉我游戏化教育对幼儿的效果怎样"
+result = qa({"question": query})
+
+print(result)

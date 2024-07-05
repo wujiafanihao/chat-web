@@ -1,0 +1,35 @@
+.file-list-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.file-list {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  position: relative;
+  height: 100vh;
+}
+
+.file-list .file-list-h3 {
+  margin-top: 0;
+}
+
+.file-list .file-list-ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-list li {
+  padding: 10px;
+  background-color: #e0e0e0;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
